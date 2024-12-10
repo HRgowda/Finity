@@ -1,1 +1,0 @@
-A robust and secure stock exchange platform.

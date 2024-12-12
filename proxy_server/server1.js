@@ -1,3 +1,5 @@
+// Due to strict CORS issues from local machine to the real exchange API server we are proxying it in a separate server in our codebase
+
 import express from "express"
 import { createProxyMiddleware } from 'http-proxy-middleware'
 const app = express();

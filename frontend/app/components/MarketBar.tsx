@@ -1,14 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Ticker } from "../utils/types";
-import { getTicker } from "../utils/httpClient";
+import { getTicker, getTrades } from "../utils/httpClient";
 import { SignalingManager } from "../utils/SignalingManager";
 
 export const MarketBar = ({market}: {market: string}) => {
     const [ticker, setTicker] = useState<Ticker | null>(null);
+    const [lastTradedPrice, setLastTradedPrice] = useState<string | null>(null);
 
     useEffect(() => {
         getTicker(market).then(setTicker);
+        getTrades(market).then((trades):any => {
+            if (trades && trades.length > 0){
+                setLastTradedPrice(trades[0].price)
+            }
+        })
         SignalingManager.getInstance().registerCallback("ticker", (data: Partial<Ticker>)  =>  setTicker(prevTicker => ({
             firstPrice: data?.firstPrice ?? prevTicker?.firstPrice ?? '',
             high: data?.high ?? prevTicker?.high ?? '',
@@ -28,7 +34,8 @@ export const MarketBar = ({market}: {market: string}) => {
             SignalingManager.getInstance().sendMessage({"method":"UNSUBSCRIBE","params":[`ticker.${market}`]}	);
         }
     }, [market])
-    // 
+
+    const priceColour = ticker?.lastPrice && lastTradedPrice ? Number(ticker.lastPrice) > Number(lastTradedPrice) ? "text-green-500" : "text-red-500" : "text-white";
 
     return <div>
         <div className="flex items-center flex-row relative w-full overflow-hidden border-b border-slate-800">
@@ -36,8 +43,12 @@ export const MarketBar = ({market}: {market: string}) => {
                     <Ticker market={market} />
                     <div className="flex items-center flex-row space-x-8 pl-4">
                         <div className="flex flex-col h-full justify-center">
-                            <p className={`font-medium tabular-nums text-greenText text-md text-green-500`}>${ticker?.lastPrice}</p>
-                            <p className="font-medium text-sm text-sm tabular-nums">${ticker?.lastPrice}</p>
+                            {ticker && ticker.lastPrice && (
+                                <>
+                                    <p className={`font-medium tabular-nums text-md ${priceColour}`}>${ticker?.lastPrice}</p>
+                                    <p className="font-medium text-sm text-sm tabular-nums">${ticker?.lastPrice}</p>                            
+                                </>
+                            )}                                
                         </div>
                         <div className="flex flex-col">
                             <p className={`font-medium text-xs text-slate-400 text-sm`}>24H Change</p>

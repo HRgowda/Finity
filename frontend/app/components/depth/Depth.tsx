@@ -66,6 +66,7 @@ export function Depth({ market }: {market: string}) {
     
     return <div>
         <TableHeader />
+        {}
         {asks && <AskTable asks={asks} />}
         <div className="h-4"></div>        
         {price && <div>{price}</div>}

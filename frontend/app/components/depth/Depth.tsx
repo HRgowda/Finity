@@ -66,12 +66,11 @@ export function Depth({ market }: {market: string}) {
     
     return <div>
         <TableHeader />
-        {}
-        {asks && <AskTable asks={asks} />}
+        {asks && <AskTable asks={asks.filter((ask):any => parseFloat(ask[1]) > 0)} />}
         <div className="h-4"></div>        
         {price && <div>{price}</div>}
         <div className="h-4"></div>
-        {bids && <BidTable bids={bids} />}
+        {bids && <BidTable bids={bids.filter((bids):any => parseFloat(bids[1]) > 0)} />}
     </div>
 }
 

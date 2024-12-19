@@ -71,7 +71,6 @@ export const MarketBar = ({market}: {market: string}) => {
                 </div>
             </div>
         </div>
-
 }
 
 function Ticker({market}: {market: string}) {

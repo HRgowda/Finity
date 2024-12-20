@@ -3,7 +3,7 @@ import { getDepth, getTicker, getTrades } from "../../utils/httpClient";
 import { BidTable } from "./BidTable";
 import { AskTable } from "./AskTable";
 import { SignalingManager } from "@/app/utils/SignalingManager";
-import Trades from "./Trades";  // Import the Trades component
+import Trades  from "./Trades";  // Import the Trades component
 
 export function Depth({ market }: { market: string }) {
   const [bids, setBids] = useState<[string, string][]>([]);
@@ -71,7 +71,7 @@ export function Depth({ market }: { market: string }) {
           <ViewTableHeader />
           {asks && <AskTable asks={asks.filter((ask) => parseFloat(ask[1]) > 0)} />}
           <div className="h-2"></div>
-          {price && <div className="text-center text-white">{price}</div>}
+          {price && <div className="ml-2 text-left text-white">{price}</div>}
           <div className="h-3"></div>
           {bids && <BidTable bids={bids.filter((bids) => parseFloat(bids[1]) > 0)} />}
         </>
@@ -81,8 +81,7 @@ export function Depth({ market }: { market: string }) {
             <TradeHeader />
             <Trades market={market} />
         </>
-      ) }  {/* Conditionally Render Trades */}
-      <div className="mb-4"></div>
+      ) }  
     </div>
   );
 }
@@ -116,7 +115,7 @@ export function TradeHeader() {
             className={`flex justify-center flex-col cursor-pointer py-1 text-sm font-medium outline-none h-[32px] px-3 ${
               view === "depth" 
                 ? "rounded-lg bg-baseBackgroundL2" 
-                : "hover:opacity-90"
+                : "hover:opacity-70"
             }`}
             onClick={() => setView("depth")}
           >
@@ -128,7 +127,7 @@ export function TradeHeader() {
             className={`flex justify-center flex-col cursor-pointer py-1 text-sm font-medium outline-none h-[32px] px-3 ${
               view === "trades" 
                 ? "rounded-lg bg-baseBackgroundL2" 
-                : "hover:opacity-90 text-baseTextMedEmphasis"
+                : "hover:opacity-70 text-baseTextMedEmphasis"
             }`}
             onClick={() => setView("trades")}
           >

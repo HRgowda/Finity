@@ -1,4 +1,4 @@
-import { Ticker } from "./types";
+import { Ticker, Trade } from "./types";
 
 export const BASE_URL = "wss://ws.backpack.exchange/"
 
@@ -64,6 +64,20 @@ export class SignalingManager {
                         const updatedAsks = message.data.a;
                         callback({ bids: updatedBids, asks: updatedAsks });
                     }
+                    if (type === "trade") {
+                        const newTrade: Trade = {
+                            id: message.data.t,
+                            price: (message.data.p),
+                            quantity: (message.data.q),
+                            timestamp: message.data.T,
+                            side: undefined,
+                            isBuyerMaker: false,
+                            quoteQuantity: ""
+                        };
+                    
+                        callback(newTrade);
+                    }
+                    
                 });
             }
         }
